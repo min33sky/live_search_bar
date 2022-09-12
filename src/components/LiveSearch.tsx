@@ -8,16 +8,19 @@ interface Props {
   value?: string;
 }
 
+/**
+ * 검색창 컴포넌트
+ */
 export default function LiveSearch({
   results = [],
   onChange,
   onSelect,
   value,
 }: Props) {
-  const [focusedIndex, setFocusedIndex] = useState(-1);
-  const seletedCursorRef = useRef<HTMLLIElement>(null);
-  const [showResults, setShowResults] = useState(false);
-  const [defaultValue, setDefaultValue] = useState('');
+  const [focusedIndex, setFocusedIndex] = useState(-1); // 커서 인덱스
+  const seletedCursorRef = useRef<HTMLLIElement>(null); // 커서가 위치한 요소를 참조하는 Ref
+  const [showResults, setShowResults] = useState(false); // 검색 결과 표시 여부
+  const [defaultValue, setDefaultValue] = useState(''); // 검색창에 표시할 기본값
 
   const handleSelection = (selectedIndex: number) => {
     const selectedItem = results[selectedIndex];
@@ -79,7 +82,7 @@ export default function LiveSearch({
       <input
         type="text"
         className="w-[600px] max-w-[90vmin] px-5 py-3 text-lg rounded-full
-      border-2 border-gray-500 focus:border-gray-700 outline-none transition"
+      border border-gray-100 focus:border-gray-100 outline-none transition focus:rounded-b-none focus:rounded-t-lg"
         placeholder="Search..."
         onChange={handleChange}
         onBlur={resetSearchComplete}
@@ -87,15 +90,15 @@ export default function LiveSearch({
         value={defaultValue}
       />
       {showResults && (
-        <div className="absolute mt-1 w-full p-2 bg-white shadow-lg  rounded-b-lg max-h-56 overflow-y-auto">
+        <div className="absolute w-full p-2 bg-white shadow-lg  rounded-b-lg max-h-56 overflow-y-auto">
           <ul>
             {results.map((result, index) => (
               <li
                 key={result.id}
                 ref={index === focusedIndex ? seletedCursorRef : null}
                 onMouseDown={() => handleSelection(index)}
-                className={`p-2 hover:bg-black/10 cursor-pointer ${
-                  index === focusedIndex ? 'bg-black/10' : ''
+                className={`p-2 hover:bg-indigo-100 cursor-pointer ${
+                  index === focusedIndex ? 'bg-indigo-100' : ''
                 }`}
               >
                 <p>{result.name}</p>

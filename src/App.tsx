@@ -8,9 +8,12 @@ export interface Profile {
 }
 
 export default function App() {
-  const [results, setResults] = useState<Profile[]>([]);
-  const [selected, setSelected] = useState<Profile | null>(null);
+  const [results, setResults] = useState<Profile[]>([]); // search results
+  const [selected, setSelected] = useState<Profile | null>(null); // selected keyword
 
+  /**
+   * 입력값에 따라 검색 결과를 필터링하는 함수
+   */
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     const { target } = e;
     if (!target.value.trim()) return setResults([]);
@@ -20,6 +23,9 @@ export default function App() {
     setResults(filteredValue);
   };
 
+  /**
+   * 현재 값을 선택하는 함수
+   */
   const handleSelect = (item: Profile) => {
     setSelected(item);
   };
