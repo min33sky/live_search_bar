@@ -19,7 +19,7 @@ export default function LiveSearch({
   const [focusedIndex, setFocusedIndex] = useState(-1); // 커서 인덱스
   const seletedCursorRef = useRef<HTMLLIElement>(null); // 커서가 위치한 요소를 참조하는 Ref
   const [showResults, setShowResults] = useState(false); // 검색 결과 표시 여부
-  const [defaultValue, setDefaultValue] = useState(''); // 검색창에 표시할 기본값
+  const [keyword, setKeyword] = useState(''); // 검색창에 표시할 기본값
 
   const handleSelection = (selectedIndex: number) => {
     const selectedItem = results[selectedIndex];
@@ -52,16 +52,19 @@ export default function LiveSearch({
     }
 
     setFocusedIndex(nextIndexCount);
-    setDefaultValue(results[nextIndexCount]?.name || '');
+    setKeyword(results[nextIndexCount]?.name || '');
   };
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    setDefaultValue(e.target.value);
+    setKeyword(e.target.value);
     onChange(e);
   };
 
+  /**
+   * X 버튼 클릭시 검색창 초기화
+   */
   const handleClickReset = () => {
-    setDefaultValue('');
+    setKeyword('');
     resetSearchComplete();
   };
 
@@ -90,14 +93,15 @@ export default function LiveSearch({
         onChange={handleChange}
         onBlur={resetSearchComplete}
         onFocus={() => results.length > 0 && setShowResults(true)}
-        value={defaultValue}
+        value={keyword}
       />
 
       <MagnifyingGlassIcon className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-gray-500" />
       <XMarkIcon
+        aria-label="Reset Button"
         onClick={handleClickReset}
         className={`absolute top-1/2 right-3  h-5 w-5 -translate-y-1/2 cursor-pointer text-gray-500 ${
-          defaultValue ? 'flex' : 'hidden'
+          keyword ? 'flex' : 'hidden'
         }`}
       />
 
