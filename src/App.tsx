@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import LiveSearch from './components/LiveSearch';
-import { profiles } from './data/profiles';
+import profiles from './data/profile.json';
 
 export interface Profile {
   id: string;
