@@ -108,7 +108,7 @@ export default function LiveSearch({
       {showResults && (
         <div
           aria-label="검색 제안 목록"
-          className="absolute max-h-56 w-full overflow-y-auto rounded-b-lg  bg-white p-2 shadow-lg"
+          className="absolute max-h-[200px] w-full overflow-y-auto rounded-b-lg  bg-white p-2 shadow-lg scrollbar-thin scrollbar-track-slate-300  scrollbar-thumb-slate-500"
         >
           <ul>
             {results.map((result, index) => (
