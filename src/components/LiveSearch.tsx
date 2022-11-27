@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Profile } from '../types';
 
 interface Props {
@@ -59,6 +60,11 @@ export default function LiveSearch({
     onChange(e);
   };
 
+  const handleClickReset = () => {
+    setDefaultValue('');
+    resetSearchComplete();
+  };
+
   useEffect(() => {
     if (!seletedCursorRef.current) return;
     //? 커서가 이동할 때마다 커서를 스크롤의 중앙에 위치시킨다.
@@ -78,13 +84,21 @@ export default function LiveSearch({
     <div className="relative" onKeyDown={handleKeyDown}>
       <input
         type="text"
-        className="w-[600px] max-w-[90vmin] rounded-full border border-gray-100 px-5
+        className="w-[600px] max-w-[90vmin] rounded-full border border-gray-100 px-10
       py-3 text-lg outline-none transition focus:rounded-b-none focus:rounded-t-lg focus:border-gray-100"
         placeholder="Search..."
         onChange={handleChange}
         onBlur={resetSearchComplete}
         onFocus={() => results.length > 0 && setShowResults(true)}
         value={defaultValue}
+      />
+
+      <MagnifyingGlassIcon className="absolute top-1/2 left-3 h-5 w-5 -translate-y-1/2 text-gray-500" />
+      <XMarkIcon
+        onClick={handleClickReset}
+        className={`absolute top-1/2 right-3  h-5 w-5 -translate-y-1/2 cursor-pointer text-gray-500 ${
+          defaultValue ? 'flex' : 'hidden'
+        }`}
       />
 
       {showResults && (
