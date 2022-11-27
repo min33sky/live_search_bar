@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Profile } from '../App';
+import { Profile } from '../types';
 
 interface Props {
   results?: Profile[];
   onChange: React.ChangeEventHandler;
   onSelect: (item: Profile) => void;
-  value?: string;
 }
 
 /**
@@ -15,7 +14,6 @@ export default function LiveSearch({
   results = [],
   onChange,
   onSelect,
-  value,
 }: Props) {
   const [focusedIndex, setFocusedIndex] = useState(-1); // 커서 인덱스
   const seletedCursorRef = useRef<HTMLLIElement>(null); // 커서가 위치한 요소를 참조하는 Ref
@@ -48,9 +46,12 @@ export default function LiveSearch({
     } else if (key === 'Enter') {
       e.preventDefault();
       handleSelection(focusedIndex);
+    } else {
+      return;
     }
 
     setFocusedIndex(nextIndexCount);
+    setDefaultValue(results[nextIndexCount]?.name || '');
   };
 
   const handleChange: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -73,31 +74,31 @@ export default function LiveSearch({
     if (results.length <= 0) setShowResults(false);
   }, [results]);
 
-  useEffect(() => {
-    if (value) setDefaultValue(value);
-  }, [value]);
-
   return (
     <div className="relative" onKeyDown={handleKeyDown}>
       <input
         type="text"
-        className="w-[600px] max-w-[90vmin] px-5 py-3 text-lg rounded-full
-      border border-gray-100 focus:border-gray-100 outline-none transition focus:rounded-b-none focus:rounded-t-lg"
+        className="w-[600px] max-w-[90vmin] rounded-full border border-gray-100 px-5
+      py-3 text-lg outline-none transition focus:rounded-b-none focus:rounded-t-lg focus:border-gray-100"
         placeholder="Search..."
         onChange={handleChange}
         onBlur={resetSearchComplete}
         onFocus={() => results.length > 0 && setShowResults(true)}
         value={defaultValue}
       />
+
       {showResults && (
-        <div className="absolute w-full p-2 bg-white shadow-lg  rounded-b-lg max-h-56 overflow-y-auto">
+        <div
+          aria-label="검색 제안 목록"
+          className="absolute max-h-56 w-full overflow-y-auto rounded-b-lg  bg-white p-2 shadow-lg"
+        >
           <ul>
             {results.map((result, index) => (
               <li
                 key={result.id}
                 ref={index === focusedIndex ? seletedCursorRef : null}
                 onMouseDown={() => handleSelection(index)}
-                className={`p-2 hover:bg-indigo-100 cursor-pointer ${
+                className={`cursor-pointer p-2 hover:bg-indigo-100 ${
                   index === focusedIndex ? 'bg-indigo-100' : ''
                 }`}
               >

@@ -4,7 +4,7 @@
 
 ## Demo
 
-[Live Demo](https://codesandbox.io/s/live-search-input-3xj7o)
+[Live Demo](https://live-searchbar.netlify.app/)
 
 ## Installation
 
