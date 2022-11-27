@@ -39,7 +39,7 @@ export default function App() {
 
         <LiveSearch
           results={results}
-          onChange={handleChange}
+          onUpdateResult={handleChange}
           onSelect={handleSelect}
         />
       </div>
