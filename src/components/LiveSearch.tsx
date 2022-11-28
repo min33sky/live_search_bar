@@ -21,6 +21,10 @@ export default function LiveSearch({
   const [showResults, setShowResults] = useState(false); // 검색 결과 표시 여부
   const [keyword, setKeyword] = useState(''); // 검색창에 표시할 기본값
 
+  /**
+   * 검색어 선택시 실행되는 함수
+   * @param selectedIndex 선택한 검색결과 인덱스
+   */
   const handleSelection = (selectedIndex: number) => {
     const selectedItem = results[selectedIndex];
     if (!selectedItem) return resetSearchComplete();
@@ -40,9 +44,11 @@ export default function LiveSearch({
    * 키보드 이벤트 핸들러
    */
   const handleKeyDown: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
+    if (results.length === 0) return;
+
     const { key } = e;
 
-    let nextIndexCount = 0;
+    let nextIndexCount = -1;
 
     //? 커서 이동은 위, 아래 방향키로만 이동할 수 있고 순환되도록 구현
     if (key === 'ArrowDown') {
@@ -56,15 +62,14 @@ export default function LiveSearch({
     } else if (key === 'Escape') {
       resetSearchComplete();
     } else if (key === 'Enter') {
-      // TODO: 시작부터 뒤 방향키를 누르고 엔터누르면 이상하게 출력
-
       e.preventDefault();
       handleSelection(focusedIndex);
+      return; //* return 하지않으면 keyword가 nextIndexCount에 해당하는 값으로 변경됨
     } else {
       return;
     }
 
-    // 커서를 업데이트하고, 현재 커서에 위치한 키워드를 화면에 표시
+    //? 커서를 업데이트하고, 현재 커서에 위치한 키워드를 화면에 표시
     setFocusedIndex(nextIndexCount);
     setKeyword(results[nextIndexCount]?.name || '');
   };
@@ -87,6 +92,17 @@ export default function LiveSearch({
     resetSearchComplete();
   }, []);
 
+  /**
+   * 검색결과목록을 클릭했을 때
+   */
+  const handleClickItem = (index: number) => {
+    setKeyword(results[index].name);
+    handleSelection(index);
+  };
+
+  /**
+   * 검색 결과 목록 스크롤 관련
+   */
   useEffect(() => {
     if (!seletedCursorRef.current) return;
     //? 커서가 이동할 때마다 커서를 스크롤의 중앙에 위치시킨다.
@@ -95,10 +111,11 @@ export default function LiveSearch({
     });
   }, [focusedIndex]);
 
+  /**
+   * 검색결과 목록 표시 여부를 결정
+   */
   useEffect(() => {
-    if (results.length > 0 && !showResults) {
-      setShowResults(true);
-    }
+    if (results.length > 0 && !showResults) setShowResults(true);
     if (results.length <= 0) setShowResults(false);
   }, [results]);
 
@@ -136,7 +153,7 @@ export default function LiveSearch({
               <li
                 key={result.id}
                 ref={index === focusedIndex ? seletedCursorRef : null}
-                onMouseDown={() => handleSelection(index)}
+                onMouseDown={() => handleClickItem(index)}
                 className={`cursor-pointer p-2 hover:bg-indigo-100 ${
                   index === focusedIndex ? 'bg-indigo-100' : ''
                 }`}
