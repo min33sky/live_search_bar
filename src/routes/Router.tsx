@@ -5,6 +5,7 @@ import About from '../screens/about';
 import ErrorTest from '../screens/errorTest';
 import Home from '../screens/home';
 import NotFound from '../screens/notFound';
+import Search from '../screens/search';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
         path: 'error-test',
         element: <ErrorTest />,
         errorElement: <ErrorViewer />,
+      },
+      {
+        path: 'search',
+        element: <Search />,
       },
     ],
   },
