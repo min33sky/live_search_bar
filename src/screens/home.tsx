@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 export default function Home() {
   const [results, setResults] = useState<Profile[]>([]); // 검색결과목록
-  const [selected, setSelected] = useState<Profile | null>(null); // 선택한 키워드
   const navigate = useNavigate();
 
   /**
@@ -28,9 +27,7 @@ export default function Home() {
    * 현재 값을 선택하는 함수
    */
   const handleSelect = (item: Profile) => {
-    console.log('현재 선택된 값: ', item);
-    setSelected(item);
-    navigate(`/search?q=${item.name}`);
+    navigate(`/search/${item.name}`);
   };
 
   return (
