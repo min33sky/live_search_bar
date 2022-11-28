@@ -11,6 +11,9 @@ export default function Header() {
           <li>
             <Link to={'/about'}>소개</Link>
           </li>
+          <li>
+            <Link to={'/error-test'}>에러</Link>
+          </li>
         </ul>
       </nav>
     </header>

@@ -31,7 +31,7 @@ export default function Home() {
   };
 
   return (
-    <div className="flex h-screen items-center justify-center bg-gradient-to-tr from-indigo-500 to-indigo-300">
+    <div className="flex h-screen w-full items-center justify-center bg-gradient-to-tr from-indigo-400 to-indigo-200">
       <div className="-mt-64 flex flex-col space-y-8">
         <h1 className="select-none text-center text-2xl font-bold tracking-wide text-slate-700">
           검색 드가자
